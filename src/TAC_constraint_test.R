@@ -7,8 +7,8 @@ lastY <- "2025"
 TAC_F <- 788
 TAC_NS3a <- 328566 
 
-NO3a <- 0.273
-C_3a <- (table[lastY,"WBSS_C.fleet"]+table[lastY,"NSAS_C.fleet"])-0.273
+NO3alastY <- 0.273
+C_3a <- (table[lastY,"WBSS_C.fleet"]+table[lastY,"NSAS_C.fleet"])-NO3alastY
 
 propEU3aC <- C_3a/(C_3a+table[lastY,"WBSS_D.fleet"]+table[lastY,"NSAS_D.fleet"])
 propEU3aD <- 1-propEU3aC
@@ -29,12 +29,14 @@ splitA <- table[lastY,"WBSS_IVaE"]/(table[lastY,"A.fleet.NSAS."]+table[lastY,"WB
 # C <- (0.7749*969+200)*30.33/100
 # D <- (0.2251*969)*14.20/100
 
-A <- (TAC_A+transfer-(propEU3aC*969+NO3a_max))*splitA
+A <- ((TAC_NS3a+EUextra)+transfer-(propEU3aC*969+NO3a_max)+(propEU3aD*969))*splitA
 C <- (propEU3aC*969+NO3a_max)*splitC
 D <- (propEU3aD*969)*splitD
 F <- TAC_F
 
 total1 <- A+C+D+F
+
+round(total1)
 
 
 # New method
@@ -44,4 +46,10 @@ catch_NSAS_43a <- sum(table[lastY,"A.fleet.NSAS."], table[lastY,"B.Fleet"], tabl
 
 splitABCD <- catch_WBSS_43a/sum(catch_WBSS_43a, catch_NSAS_43a) 
 
-total2 <- splitABCD*TAC_NS3a+F
+EUextra <- 560 # from https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L_202600249
+
+total2 <- splitABCD*(TAC_NS3a+EUextra)+F
+
+round(total2)
+
+
